@@ -78,9 +78,6 @@ public class Stocks {
 			};
 			//fetch
 			fetchHelper.fetch(QueryHelper.getStocks);
-			
-			//setup model
-			cmb_model = (DefaultComboBoxModel<Stock>)fetchHelper.getTempStore();
 		} catch (SQLException | ClassNotFoundException e) {
 			JOptionPane.showMessageDialog(null, "An error occured while fatching stocks data.");
 			e.printStackTrace();
@@ -120,9 +117,6 @@ public class Stocks {
 			};
 			//fetch
 			fetchHelper.fetch(QueryHelper.getStocks);
-			
-			//get object
-			tbl_model = (DefaultTableModel)fetchHelper.getTempStore();
 			
 		} catch (SQLException | ClassNotFoundException e) {
 			JOptionPane.showMessageDialog(null, "An error occured while fatching stocks data.");
