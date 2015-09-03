@@ -59,30 +59,29 @@ public class Stocks {
 	public DefaultComboBoxModel<Stock> getStockSelection(){
 		//initialize
 		DefaultComboBoxModel<Stock> cmb_model = new DefaultComboBoxModel<Stock>();
-		SQLFetchHelper fetchHelper = new SQLFetchHelperWithDatabaseConfig(databaseConfig,cmb_model) {
-
-			//get comboBox model
-			private DefaultComboBoxModel<Stock> getComboBoxModel(){
-				return (DefaultComboBoxModel<Stock>) this.getTempStore();
-			}
-			
-			@Override
-			public void bindDataWithResultSet(ResultSet resultSet) throws SQLException {
-				getComboBoxModel().addElement(new Stock(resultSet.getInt("code"),
-						resultSet.getDouble("qty"),
-						resultSet.getDouble("unit_price"),
-						resultSet.getString("description")));
-			}
-		};
-		
-		
 		try {
+			//initialize
+			SQLFetchHelper fetchHelper = new SQLFetchHelperWithDatabaseConfig(databaseConfig,cmb_model) {
+
+				//get comboBox model
+				private DefaultComboBoxModel<Stock> getComboBoxModel(){
+					return (DefaultComboBoxModel<Stock>) this.getTempStore();
+				}
+				
+				@Override
+				public void bindDataWithResultSet(ResultSet resultSet) throws SQLException {
+					getComboBoxModel().addElement(new Stock(resultSet.getInt("code"),
+							resultSet.getDouble("qty"),
+							resultSet.getDouble("unit_price"),
+							resultSet.getString("description")));
+				}
+			};
 			//fetch
 			fetchHelper.fetch(QueryHelper.getStocks);
 			
 			//setup model
 			cmb_model = (DefaultComboBoxModel<Stock>)fetchHelper.getTempStore();
-		} catch (SQLException e) {
+		} catch (SQLException | ClassNotFoundException e) {
 			JOptionPane.showMessageDialog(null, "An error occured while fatching stocks data.");
 			e.printStackTrace();
 		}
@@ -101,31 +100,31 @@ public class Stocks {
 				return false;
 			}
 		};
-		SQLFetchHelper fetchHelper = new SQLFetchHelperWithDatabaseConfig(databaseConfig,tbl_model) {
-			
-			//get table model
-			private DefaultTableModel getTableModel(){
-				return (DefaultTableModel) this.getTempStore();
-			}
-			
-			@Override
-			public void bindDataWithResultSet(ResultSet resultSet) throws SQLException {
-				//initialize
-				this.getTableModel().addRow(new Object[]{resultSet.getInt(columns[0]),
-						resultSet.getString(columns[1]),
-						resultSet.getDouble(columns[2]),
-						resultSet.getDouble(columns[3])});
-			}
-		};
-		
 		try {
+			//declare
+			SQLFetchHelper fetchHelper = new SQLFetchHelperWithDatabaseConfig(databaseConfig,tbl_model) {
+				
+				//get table model
+				private DefaultTableModel getTableModel(){
+					return (DefaultTableModel) this.getTempStore();
+				}
+				
+				@Override
+				public void bindDataWithResultSet(ResultSet resultSet) throws SQLException {
+					//initialize
+					this.getTableModel().addRow(new Object[]{resultSet.getInt(columns[0]),
+							resultSet.getString(columns[1]),
+							resultSet.getDouble(columns[2]),
+							resultSet.getDouble(columns[3])});
+				}
+			};
 			//fetch
 			fetchHelper.fetch(QueryHelper.getStocks);
 			
 			//get object
 			tbl_model = (DefaultTableModel)fetchHelper.getTempStore();
 			
-		} catch (SQLException e) {
+		} catch (SQLException | ClassNotFoundException e) {
 			JOptionPane.showMessageDialog(null, "An error occured while fatching stocks data.");
 			e.printStackTrace();
 		}

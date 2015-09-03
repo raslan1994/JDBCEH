@@ -12,9 +12,10 @@ public abstract class SQLFetchHelperWithDatabaseConfig extends SQLParameterFacto
     private DatabaseConfig config;
     private Object tempStore;
 
-    public SQLFetchHelperWithDatabaseConfig(DatabaseConfig config, Object tempStore){
+    public SQLFetchHelperWithDatabaseConfig(DatabaseConfig config, Object tempStore) throws ClassNotFoundException{
         this.config = config;
         this.tempStore = tempStore;
+        Class.forName(config.getClassForName());
     }
 
     @Override
